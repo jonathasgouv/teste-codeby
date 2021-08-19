@@ -1,5 +1,6 @@
+import 'dotenv/config';
 import express from 'express';
-import mailRouter from './routes/mail'
+import mailRouter from './routes/mail';
 
 const app = express();
 
