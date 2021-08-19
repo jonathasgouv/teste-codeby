@@ -14,7 +14,7 @@ exports.post = async (req, res) => {
       }
 
       // Adicionar job ProductsMail na fila
-      await Queue.add({user});
+      await Queue.add('ProductsMail',{user});
 
       return res.sendStatus(200);
     } catch (e) {
