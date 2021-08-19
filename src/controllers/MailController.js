@@ -1,5 +1,4 @@
-import axios from '../config/axios'
-import Mail from '../lib/Mail'
+import Queue from '../lib/Queue'
 
 exports.post = async (req, res) => {
     try {
@@ -9,19 +8,15 @@ exports.post = async (req, res) => {
         return res.status(400).json({ error: "Missing information" });
       }
 
-      const data = await axios.getProducts()
+      const user = {
+          name,
+          email
+      }
 
-      await Mail.sendMail({
-          from: 'Queue Test <queue@queue.com>',
-          to: `${name} <${email}>`,
-          subject: 'Produtos da loja',
-          html: `
-          <h3>Olá, <b>${name}</b></h3>
-          <p>Atualmente a loja tem <b>${data.length}</b> produtos.</p>
-          `
-      })
+      // Adicionar job ProductsMail na fila
+      await Queue.add({user});
 
-      return res.status(200);
+      return res.sendStatus(200);
     } catch (e) {
       console.log(e);
       return res.status(500).json({ error: "Internal Server Error" });
