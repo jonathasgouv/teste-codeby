@@ -1,4 +1,7 @@
 import Queue from '../lib/Queue'
+import * as EmailValidator from 'email-validator';
+ 
+EmailValidator.validate("test@email.com"); // true
 
 exports.post = async (req, res) => {
     try {
@@ -6,6 +9,10 @@ exports.post = async (req, res) => {
   
       if (!name || !email) {
         return res.status(400).json({ error: "Missing information" });
+      }
+
+      if (!EmailValidator.validate(email)) {
+        return res.status(400).json({ error: "Invalid email" });
       }
 
       const user = {
